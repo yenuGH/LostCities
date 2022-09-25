@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,16 +18,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Find the button
-        Button button = findViewById(R.id.buttonClickMe);
+        FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
         // Set button behaviour
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, "You clicked it!");
-                Toast.makeText(MainActivity.this, "YAY! Good work!", Toast.LENGTH_SHORT)
-                        .show();
-            }
+        createGame.setOnClickListener(view -> {
+            Log.i(TAG, "You clicked it!");
+            Toast.makeText(MainActivity.this, "YAY! Good work!", Toast.LENGTH_SHORT).show();
         });
     }
 }

@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">assignment2</string>
+    <string name="app_name">Games Played</string>
+
+    <string-array name="winning_player_options">
+        <item>Player 1</item>
+        <item>Player 2</item>
+        <item>Player 3</item>
+        <item>Player 4</item>
+    </string-array>
+
 </resources>
