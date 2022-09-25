@@ -6,11 +6,9 @@ public class GameManager {
 
     ArrayList<Game> gameList = new ArrayList<>();
 
-    public String createGame(ArrayList<PlayerScore> playerList) {
+    public void createGame(ArrayList<PlayerScore> playerList) {
         Game newGame = new Game(playerList);
         gameList.add(newGame);
-        String info = newGame.gameInfo();
-        return info;
     }
 
     /*

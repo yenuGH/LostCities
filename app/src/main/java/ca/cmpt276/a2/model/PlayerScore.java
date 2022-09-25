@@ -3,24 +3,24 @@ package ca.cmpt276.a2.model;
 public class PlayerScore {
 
     protected int playerNumber;
-    protected int numberOfPointCards;
+    protected int numberOfCards;
     protected int numberOfWagers;
     protected int sumOfPointCards;
     protected int score;
 
-    public PlayerScore(int playerNumber, int numberOfPointCards, int sumOfPointCards, int numberOfWagers) {
+    public PlayerScore(int playerNumber, int numberOfCards, int sumOfPointCards, int numberOfWagers) {
         // if any negative value is passed in
         // or the player number exceeds 4 (can only have max 4 players in 1 game)
         // throw exception
         if (playerNumber < 0 ||
                 playerNumber > 4 ||
-                numberOfPointCards < 0 ||
+                numberOfCards < 0 ||
                 sumOfPointCards < 0 ||
                 numberOfWagers < 0) {
             throw new IllegalArgumentException("Invalid input. Cannot have negative number input.");
         }
         this.playerNumber = playerNumber;
-        this.numberOfPointCards = numberOfPointCards;
+        this.numberOfCards = numberOfCards;
         this.sumOfPointCards = sumOfPointCards;
         this.numberOfWagers = numberOfWagers;
 
@@ -30,7 +30,7 @@ public class PlayerScore {
     public void calculateScore() {
 
         // if there are 0 cards, we will just return a score of 0
-        if (numberOfPointCards == 0) {
+        if (numberOfCards == 0) {
             return;
         }
 
@@ -40,7 +40,7 @@ public class PlayerScore {
         score = score * (numberOfWagers + 1);
         // and if the player has 8 cards in total (including wagers) or more
         // then we will add 20 onto the final score
-        if ((numberOfPointCards + numberOfWagers) >= 8) {
+        if (numberOfCards >= 8) {
             score += 20;
         }
 
@@ -51,8 +51,8 @@ public class PlayerScore {
         return playerNumber;
     }
 
-    public int getNumberOfPointCards() {
-        return numberOfPointCards;
+    public int getNumberOfCards() {
+        return numberOfCards;
     }
 
     public int getNumberOfWagers() {

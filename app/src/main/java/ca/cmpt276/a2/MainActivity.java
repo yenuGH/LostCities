@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 import ca.cmpt276.a2.model.Game;
 import ca.cmpt276.a2.model.GameManager;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        populateArrayList();
 
         // Find the button
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
@@ -52,47 +55,29 @@ public class MainActivity extends AppCompatActivity {
 
     // below here is only for testing purposes
     private void populateArrayList(){
+        for (int i = 0; i < 10; i++){
+            newGame(ThreadLocalRandom.current().nextInt(1, 4));
+        }
+    }
 
+    private void newGame(int numberOfPlayers) {
+        ArrayList<PlayerScore> playerList = createPlayers(numberOfPlayers);
+        gameManager.createGame(playerList);
     }
 
     private ArrayList<PlayerScore> createPlayers(int numberOfPlayers) {
         ArrayList<PlayerScore> playerList = new ArrayList<>();
 
-        ArrayList<String> inputList = new ArrayList<>(
-                Arrays.asList("Number of cards: ", "Sum of cards: ", "Number of wagers: "));
 
-        ArrayList<Integer> playerInput = new ArrayList<>();
+        for (int i = 0; i < numberOfPlayers; i++){
+            int playerNumber = i;
+            int sumOfCards = ThreadLocalRandom.current().nextInt(10, 50 + 1);
+            int numOfWagers = ThreadLocalRandom.current().nextInt(0, 5 + 1);
+            int numOfCards = ThreadLocalRandom.current().nextInt(numOfWagers, 15 + 1);
 
-        for (int i = 0; i < numberOfPlayers; i++) {
-            int playerNumber = i + 1;
-            System.out.print("\nPlayer " + playerNumber + ":");
+            PlayerScore playerScore = new PlayerScore(playerNumber, numOfCards, sumOfCards, numOfWagers);
+            playerList.add(playerScore);
 
-            int inputListCounter = 0;
-            while (inputListCounter <= inputList.size() - 1) {
-                System.out.print("\n" + inputList.get(inputListCounter));
-                int input = scanner.nextInt();
-                if (input == 0 && inputList.get(inputListCounter).equals("Number of cards: ")) {
-                    playerInput = new ArrayList<>(Arrays.asList(0, 0, 0));
-                    break;
-                } else if (input < 0) {
-                    System.out.println("Invalid input. Please enter a value that is 0 or greater.");
-                } else {
-                    playerInput.add(input);
-                    inputListCounter++;
-                }
-            }
-
-            // if somehow negative values are passed into a new PlayerScore object
-            // it will throw an IllegalArgumentException and will create a new object
-            // the new object will just have a total score of 0
-            try {
-                playerList
-                        .add(new PlayerScore(playerNumber, playerInput.get(0), playerInput.get(1), playerInput.get(2)));
-            } catch (IllegalArgumentException e) {
-                System.out.println(e);
-                playerList.add(new PlayerScore(0, 0, 0, 0));
-            }
-            playerInput.clear();
         }
 
         return playerList;
