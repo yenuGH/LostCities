@@ -13,6 +13,20 @@ public class GameManager {
         return info;
     }
 
+    /*
+        Singleton support
+     */
+    private static GameManager instance;
+    private GameManager() {
+        // private to prevent anything else from instantiating
+    }
+    public static GameManager getInstance(){
+        if (instance == null){
+            instance = new GameManager();
+        }
+        return instance;
+    }
+
     public String getGameInfo() {
 
         if (gameList.size() == 0) {
@@ -38,4 +52,5 @@ public class GameManager {
         return gameList.size();
     }
 
+    public ArrayList<Game> getGameList() { return gameList; }
 }

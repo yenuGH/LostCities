@@ -79,4 +79,9 @@ public class Game {
         this.winningPlayers = winningPlayers;
     }
 
+    public ArrayList<PlayerScore> getPlayerList() { return playerList; }
+
+    public ArrayList<PlayerScore> getWinningPlayers() { return winningPlayers; }
+
+    public LocalDateTime getDatePlayed() { return datePlayed; }
 }
