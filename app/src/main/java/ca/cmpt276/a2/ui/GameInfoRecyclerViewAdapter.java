@@ -40,8 +40,8 @@ public class GameInfoRecyclerViewAdapter extends RecyclerView.Adapter<GameInfoRe
         // Assigning values to the views we created in the recyclerview_cardview_layout.xml file
         // based on the position of the recycler view
 
-        holder.tvWinners.setText(gameInfoCardModels.get(position).getGameWinners());
-        holder.tvScores.setText(gameInfoCardModels.get(position).getGameScores());
+        holder.tvWinners.setText("Winning players: " + gameInfoCardModels.get(position).getGameWinners());
+        holder.tvScores.setText("Scores: " + gameInfoCardModels.get(position).getGameScores());
         holder.tvDatePlayed.setText(gameInfoCardModels.get(position).getGameTimePlayed());
         holder.ivWinner.setImageResource(gameInfoCardModels.get(position).getGameWinnersIcon());
 

@@ -49,7 +49,7 @@ public class GameInfoCardModel {
         // get the winning players
         String winners = "";
         for (int i = 0; i < winningPlayers.size(); i++) {
-            winners += Integer.toString(winningPlayers.get(i).getPlayerNumber());
+            winners += Integer.toString(winningPlayers.get(i).getPlayerNumber() + 1);
             // will only print "," in between player numbers
             if (i < winningPlayers.size() - 1) {
                 winners += ", ";
@@ -87,10 +87,9 @@ public class GameInfoCardModel {
 
     }
 
+    public Game getGame() { return game; }
 
     public String getGameWinners() { return gameWinner; }
-
-    public int getGameWinnerAmount() { return gameWinnerAmount; }
 
     public String getGameScores() { return gameScores; }
 
