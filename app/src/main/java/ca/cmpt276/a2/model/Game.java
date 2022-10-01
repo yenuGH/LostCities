@@ -38,7 +38,7 @@ public class Game {
         }
 
         // formatting the date to make it look pretty
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("(@yyyy-mm-dd HH:mm)");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("(@yyyy-MM-dd HH:mm)");
         String formattedDatePlayed = datePlayed.format(dateTimeFormatter);
 
         // create the final string

@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import ca.cmpt276.a2.model.Game;
@@ -22,31 +22,47 @@ import ca.cmpt276.a2.ui.GameInfoRecyclerViewAdapter;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<GameInfoCardModel> gameInfoCardModels = new ArrayList<>();
+    GameInfoRecyclerViewAdapter adapter;
+    RecyclerView recyclerView;
+
     GameManager gameManager = GameManager.getInstance();
+    Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        populateArrayList();
+        recyclerView = findViewById(R.id.rvGamesList);
+        setupGameInfoModels();
+        adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
         // Find the button
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
         // Set button behaviour
         createGame.setOnClickListener(view -> {
-            Toast.makeText(MainActivity.this, "YAY! Good work!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Regenerated random list.", Toast.LENGTH_SHORT).show();
+            updateRecyclerViewAdapter();
         });
 
-        RecyclerView recyclerView = findViewById(R.id.rvGamesList);
-        setupGameInfoModels();
-        GameInfoRecyclerViewAdapter adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
     }
 
+    private void updateRecyclerViewAdapter(){
+        gameInfoCardModels.clear();
+        while (gameManager.getNumberOfGames() != 0){
+            gameManager.deleteSpecificGame(0);
+        }
+        setupGameInfoModels();
+        adapter.notifyDataSetChanged();
+    }
+
     private void setupGameInfoModels() {
+
+        populateArrayList();
+
         ArrayList<Game> gameList = gameManager.getGameList();
         for (int i = 0; i < gameList.size(); i++){
             gameInfoCardModels.add(new GameInfoCardModel(gameList.get(i)));
@@ -55,8 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
     // below here is only for testing purposes
     private void populateArrayList(){
-        for (int i = 0; i < 10; i++){
-            newGame(ThreadLocalRandom.current().nextInt(1, 4));
+        for (int i = 0; i < 5; i++){
+            int randomInt = random.nextInt(4) + 1;
+            newGame(randomInt);
         }
     }
 
@@ -71,9 +88,12 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < numberOfPlayers; i++){
             int playerNumber = i;
-            int sumOfCards = ThreadLocalRandom.current().nextInt(10, 50 + 1);
-            int numOfWagers = ThreadLocalRandom.current().nextInt(0, 5 + 1);
-            int numOfCards = ThreadLocalRandom.current().nextInt(numOfWagers, 15 + 1);
+            int sumOfCards = random.nextInt(50 - 10) + 10;
+            int numOfWagers = random.nextInt(6);
+            int numOfCards = random.nextInt(16 - numOfWagers) + numOfWagers;
+            //int sumOfCards = ThreadLocalRandom.current().nextInt(10, 50 + 1);
+            //int numOfWagers = ThreadLocalRandom.current().nextInt(0, 5 + 1);
+            //int numOfCards = ThreadLocalRandom.current().nextInt(numOfWagers, 15 + 1);
 
             PlayerScore playerScore = new PlayerScore(playerNumber, numOfCards, sumOfCards, numOfWagers);
             playerList.add(playerScore);

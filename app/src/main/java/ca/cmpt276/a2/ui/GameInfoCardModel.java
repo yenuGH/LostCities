@@ -59,7 +59,7 @@ public class GameInfoCardModel {
         gameWinnerAmount = winningPlayers.size();
 
         // get the date played
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("(@yyyy-mm-dd HH:mm)");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("(@yyyy-MM-dd HH:mm)");
         String formattedDatePlayed = datePlayed.format(dateTimeFormatter);
         gameTimePlayed = formattedDatePlayed;
 

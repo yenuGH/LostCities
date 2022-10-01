@@ -11,9 +11,8 @@ public class GameManager {
         gameList.add(newGame);
     }
 
-    /*
-        Singleton support
-     */
+
+    // Singleton support
     private static GameManager instance;
     private GameManager() {
         // private to prevent anything else from instantiating
