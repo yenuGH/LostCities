@@ -27,6 +27,8 @@ public class GameInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_info);
 
-        GameInfoActivity.this.setTitle(activityTitle);
+        // GameInfoActivity.this.setTitle(activityTitle);
+        getSupportActionBar().setTitle(activityTitle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

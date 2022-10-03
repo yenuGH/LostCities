@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MainActivity.this.setTitle("Games Played");
+        // MainActivity.this.setTitle("Games Played");
 
         recyclerView = findViewById(R.id.rvGamesList);
         setupGameInfoModels();

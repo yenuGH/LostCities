@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Assignment2</string>
+    <string name="game_list">Games Played</string>
+    <string name="create_game">Create Game</string>
+    <string name="edit_game">Edit Game</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>
