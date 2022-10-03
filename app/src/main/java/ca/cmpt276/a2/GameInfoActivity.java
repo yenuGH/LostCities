@@ -1,6 +1,7 @@
 package ca.cmpt276.a2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -62,9 +63,10 @@ public class GameInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_info);
 
-        // GameInfoActivity.this.setTitle(activityTitle);
+        Toolbar toolbarGameInfo = findViewById(R.id.tbGameInfo);
+        setSupportActionBar(toolbarGameInfo);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setTitle(activityTitle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // One great thing about the EditText is that it will not allow negative integers to be inputted!
         // So we don't have to check for any non-positive integers c:

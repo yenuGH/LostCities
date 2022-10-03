@@ -1,12 +1,12 @@
 package ca.cmpt276.a2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));*/
+
+        Toolbar toolbar = findViewById(R.id.tbGamesPlayed);
+        setSupportActionBar(toolbar);
 
         setupRecyclerView();
         updateRecyclerViewAdapter();
