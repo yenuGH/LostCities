@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         createGame.setOnClickListener(view -> {
             //Toast.makeText(MainActivity.this, "Regenerated random list.", Toast.LENGTH_SHORT).show();
             //updateRecyclerViewAdapter();
+
+            Intent intent = GameInfoActivity.makeIntent(MainActivity.this, "create");
+            startActivity(intent);
         });
 
 
