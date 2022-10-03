@@ -52,6 +52,18 @@
         app:layout_constraintEnd_toStartOf="@+id/etPlayer1NumberOfWagers"
         app:layout_constraintTop_toBottomOf="@+id/tvSumOfCardsMessage" />
 
+    <TextView
+        android:id="@+id/tvPlayerScoresMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Scores:"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tvPlayer1Score"
+        app:layout_constraintTop_toBottomOf="@+id/tvNumberOfWagersMessage" />
+
     <EditText
         android:id="@+id/etPlayer1NumberOfCards"
         android:layout_width="95dp"
@@ -162,6 +174,28 @@
         android:text="Awaiting input..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayerScoresMessage" />
+
+    <TextView
+        android:id="@+id/tvPlayer1Score"
+        android:layout_width="59dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="57dp"
+        android:text="--"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/tvPlayer2Score"
         app:layout_constraintTop_toBottomOf="@+id/etPlayer1NumberOfWagers" />
+
+    <TextView
+        android:id="@+id/tvPlayer2Score"
+        android:layout_width="59dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="47dp"
+        android:text="--"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayer2NumberOfWagers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
