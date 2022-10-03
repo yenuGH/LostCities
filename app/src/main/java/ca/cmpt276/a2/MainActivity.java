@@ -35,11 +35,14 @@ public class MainActivity extends AppCompatActivity {
 
         // MainActivity.this.setTitle("Games Played");
 
-        recyclerView = findViewById(R.id.rvGamesList);
+/*        recyclerView = findViewById(R.id.rvGamesList);
         setupGameInfoModels();
         adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));*/
+
+        setupRecyclerView();
+        updateRecyclerViewAdapter();
 
         // Find the button
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
@@ -53,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setupRecyclerView(){
+        recyclerView = findViewById(R.id.rvGamesList);
+        setupGameInfoModels();
+        adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     private void updateRecyclerViewAdapter(){

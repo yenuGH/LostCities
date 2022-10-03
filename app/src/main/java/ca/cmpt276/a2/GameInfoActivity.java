@@ -31,4 +31,6 @@ public class GameInfoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(activityTitle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+
 }
