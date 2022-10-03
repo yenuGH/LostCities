@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     // below here is only for testing purposes
     private void populateArrayList(){
         for (int i = 0; i < 5; i++){
-            int randomInt = random.nextInt(4) + 1;
+            int randomInt = random.nextInt(2) + 1;
             newGame(randomInt);
         }
     }

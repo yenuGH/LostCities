@@ -20,13 +20,13 @@
         android:id="@+id/tvNumberOfCardsMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="Number of cards:"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber"
-        app:layout_constraintTop_toBottomOf="@+id/tvCurrentDate" />
+        app:layout_constraintEnd_toStartOf="@+id/etPlayer1NumberOfCards"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayer1" />
 
     <TextView
         android:id="@+id/tvSumOfCardsMessage"
@@ -37,7 +37,7 @@
         android:text="Sum of cards:"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber6"
+        app:layout_constraintEnd_toStartOf="@+id/etPlayer1SumOfCards"
         app:layout_constraintTop_toBottomOf="@+id/tvNumberOfCardsMessage" />
 
     <TextView
@@ -49,73 +49,119 @@
         android:text="Number of wagers:"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber7"
+        app:layout_constraintEnd_toStartOf="@+id/etPlayer1NumberOfWagers"
         app:layout_constraintTop_toBottomOf="@+id/tvSumOfCardsMessage" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/etPlayer1NumberOfCards"
         android:layout_width="95dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
+        android:hint="--"
         android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber2"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/etPlayer2NumberOfCards"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayer1" />
+
+    <EditText
+        android:id="@+id/etPlayer1SumOfCards"
+        android:layout_width="95dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="--"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/etPlayer2SumOfCards"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayer1NumberOfCards" />
+
+    <EditText
+        android:id="@+id/etPlayer1NumberOfWagers"
+        android:layout_width="95dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="--"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/etPlayer2NumberOfWagers"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayer1SumOfCards" />
+
+    <EditText
+        android:id="@+id/etPlayer2NumberOfCards"
+        android:layout_width="95dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="--"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayer2" />
+
+    <EditText
+        android:id="@+id/etPlayer2SumOfCards"
+        android:layout_width="95dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="--"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayer2NumberOfCards" />
+
+    <EditText
+        android:id="@+id/etPlayer2NumberOfWagers"
+        android:layout_width="95dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="--"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayer2SumOfCards" />
+
+    <TextView
+        android:id="@+id/tvPlayer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="70dp"
+        android:text="Player 1"
+        android:textColor="#000000"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/tvPlayer2"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentDate" />
 
-    <EditText
-        android:id="@+id/editTextNumber6"
-        android:layout_width="95dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber5"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
-
-    <EditText
-        android:id="@+id/editTextNumber7"
-        android:layout_width="95dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber8"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber6" />
-
-    <EditText
-        android:id="@+id/editTextNumber2"
-        android:layout_width="95dp"
-        android:layout_height="0dp"
+    <TextView
+        android:id="@+id/tvPlayer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:inputType="number"
+        android:layout_marginEnd="47dp"
+        android:text="Player 2"
+        android:textColor="#000000"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentDate" />
 
-    <EditText
-        android:id="@+id/editTextNumber5"
-        android:layout_width="95dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:inputType="number"
+    <TextView
+        android:id="@+id/tvWinnersUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Calculating scores..."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
-
-    <EditText
-        android:id="@+id/editTextNumber8"
-        android:layout_width="95dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber5" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayer1NumberOfWagers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

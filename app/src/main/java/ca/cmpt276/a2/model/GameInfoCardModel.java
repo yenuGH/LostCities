@@ -5,17 +5,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import ca.cmpt276.a2.R;
-import ca.cmpt276.a2.model.Game;
-import ca.cmpt276.a2.model.PlayerScore;
 
 public class GameInfoCardModel {
 
-    private static final int[] GAME_WINNER_ICONS = {R.drawable.winner_1, R.drawable.winner_2, R.drawable.winner_3, R.drawable.winner_4, R.drawable.winner_draw};
+    private static final int[] GAME_WINNER_ICONS = {R.drawable.winner_1, R.drawable.winner_2, R.drawable.winner_draw};
     private static final int WINNER_PLAYER1 = 0;
     private static final int WINNER_PLAYER2 = 1;
-    private static final int WINNER_PLAYER3 = 2;
-    private static final int WINNER_PLAYER4 = 3;
-    private static final int WINNER_DRAW = 4;
+    private static final int WINNER_DRAW = 2;
 
     String gameWinner;
     int gameWinnerAmount;
@@ -74,12 +70,6 @@ public class GameInfoCardModel {
                     break;
                 case 2:
                     gameWinnersIcon = GAME_WINNER_ICONS[WINNER_PLAYER2];
-                    break;
-                case 3:
-                    gameWinnersIcon = GAME_WINNER_ICONS[WINNER_PLAYER3];
-                    break;
-                case 4:
-                    gameWinnersIcon = GAME_WINNER_ICONS[WINNER_PLAYER4];
                     break;
             }
         }

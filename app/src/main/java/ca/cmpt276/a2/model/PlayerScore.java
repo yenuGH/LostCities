@@ -13,7 +13,7 @@ public class PlayerScore {
         // or the player number exceeds 4 (can only have max 4 players in 1 game)
         // throw exception
         if (playerNumber < 0 ||
-                playerNumber > 4 ||
+                playerNumber > 2 ||
                 numberOfCards < 0 ||
                 sumOfPointCards < 0 ||
                 numberOfWagers < 0) {
