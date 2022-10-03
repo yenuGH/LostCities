@@ -10,6 +10,8 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class GameInfoActivity extends AppCompatActivity {
@@ -40,6 +42,8 @@ public class GameInfoActivity extends AppCompatActivity {
 
     // Realtime score calculation text
     private TextView winnersRealTimeUpdate;
+    // The date is important!
+    private TextView currentDate;
 
     public static Intent makeIntent(Context context, String name) {
 
@@ -67,6 +71,12 @@ public class GameInfoActivity extends AppCompatActivity {
 
         // Get the realtime score calculation text
         winnersRealTimeUpdate = findViewById(R.id.tvWinnersRealTimeUpdate);
+        // Get the date!
+        currentDate = findViewById(R.id.tvCurrentDate);
+        LocalDateTime datePlayed = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d @ H:mma");
+        String formattedDatePlayed = datePlayed.format(dateTimeFormatter);
+        currentDate.setText(formattedDatePlayed);
 
         // Get player 1 input
         player1NumberOfCards = findViewById(R.id.etPlayer1NumberOfCards);
@@ -117,7 +127,6 @@ public class GameInfoActivity extends AppCompatActivity {
 
         }
     };
-
 
     private void saveGame(){
         TextView winnersRealTimeUpdate = findViewById(R.id.tvWinnersRealTimeUpdate);
