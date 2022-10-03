@@ -1,4 +1,4 @@
-package ca.cmpt276.a2.ui;
+package ca.cmpt276.a2.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;

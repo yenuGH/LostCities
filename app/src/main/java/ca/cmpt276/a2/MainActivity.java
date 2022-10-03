@@ -11,13 +11,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import ca.cmpt276.a2.model.Game;
 import ca.cmpt276.a2.model.GameManager;
 import ca.cmpt276.a2.model.PlayerScore;
-import ca.cmpt276.a2.ui.GameInfoCardModel;
-import ca.cmpt276.a2.ui.GameInfoRecyclerViewAdapter;
+import ca.cmpt276.a2.model.GameInfoCardModel;
+import ca.cmpt276.a2.model.GameInfoRecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MainActivity.this.setTitle("Games Played");
+
         recyclerView = findViewById(R.id.rvGamesList);
         setupGameInfoModels();
         adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
@@ -43,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
         // Set button behaviour
         createGame.setOnClickListener(view -> {
-            Toast.makeText(MainActivity.this, "Regenerated random list.", Toast.LENGTH_SHORT).show();
-            updateRecyclerViewAdapter();
+            //Toast.makeText(MainActivity.this, "Regenerated random list.", Toast.LENGTH_SHORT).show();
+            //updateRecyclerViewAdapter();
         });
 
 

@@ -1,4 +1,4 @@
-package ca.cmpt276.a2.ui;
+package ca.cmpt276.a2.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,8 +60,7 @@ public class GameInfoCardModel {
 
         // get the date played
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("(@yyyy-MM-dd HH:mm)");
-        String formattedDatePlayed = datePlayed.format(dateTimeFormatter);
-        gameTimePlayed = formattedDatePlayed;
+        gameTimePlayed = datePlayed.format(dateTimeFormatter);
 
         // get the proper image integer
         if (winningPlayers.size() > 1){ // if there is more than 1 winner

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Games Played</string>
+    <string name="app_name">Assignment2</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>
