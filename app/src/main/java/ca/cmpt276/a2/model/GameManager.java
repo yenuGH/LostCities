@@ -24,6 +24,8 @@ public class GameManager {
         return instance;
     }
 
+    // Normal object code
+
     public String getGameInfo() {
 
         if (gameList.size() == 0) {

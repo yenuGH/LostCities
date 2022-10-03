@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,11 +23,11 @@ import ca.cmpt276.a2.model.PlayerScore;
 
 public class GameInfoActivity extends AppCompatActivity {
 
-    private final int PLAYER1_NUMBER = 1;
-    private final int PLAYER2_NUMBER = 2;
+    private final int PLAYER1_NUMBER = 0;
+    private final int PLAYER2_NUMBER = 1;
 
     static String activityTitle;
-    private GameManager gameManager = GameManager.getInstance();
+    private GameManager gameManager;
 
     // Player 1
     private EditText player1NumberOfCards;
@@ -79,13 +80,6 @@ public class GameInfoActivity extends AppCompatActivity {
         // One great thing about the EditText is that it will not allow negative integers to be inputted!
         // So we don't have to check for any non-positive integers c:
 
-        // Set up the save button
-        Button saveGameInfo = findViewById(R.id.btnSaveGameInfo);
-        saveGameInfo.setOnClickListener(view -> {
-            saveGame();
-            finish();
-        });
-
         // Get the realtime score calculation text
         winnersRealTimeUpdate = findViewById(R.id.tvWinnersRealTimeUpdate);
         // Get the date!
@@ -120,6 +114,13 @@ public class GameInfoActivity extends AppCompatActivity {
         player2SumOfCards.addTextChangedListener(inputTextWatcher);
         player2NumberOfWagers.addTextChangedListener(inputTextWatcher);
 
+        // Set up the save button
+        Button saveGameInfo = findViewById(R.id.btnSaveGameInfo);
+        saveGameInfo.setOnClickListener(view -> {
+            saveGame();
+            finish();
+        });
+
 
     }
 
@@ -147,6 +148,8 @@ public class GameInfoActivity extends AppCompatActivity {
     };
 
     private void saveGame(){
+        gameManager = GameManager.getInstance();
+
         PlayerScore player1 = new PlayerScore(PLAYER1_NUMBER, p1Cards, p1Sum, p1Wagers);
         PlayerScore player2 = new PlayerScore(PLAYER2_NUMBER, p2Cards, p2Sum, p2Wagers);
 
@@ -155,6 +158,8 @@ public class GameInfoActivity extends AppCompatActivity {
         playerList.add(player2);
 
         gameManager.createGame(playerList);
+
+
     }
 
     private void resetWinnersRealTimeUpdate() {

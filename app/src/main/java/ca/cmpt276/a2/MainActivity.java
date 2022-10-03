@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,19 +36,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // MainActivity.this.setTitle("Games Played");
-
-/*        recyclerView = findViewById(R.id.rvGamesList);
-        setupGameInfoModels();
-        adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));*/
-
         Toolbar toolbar = findViewById(R.id.tbGamesPlayed);
         setSupportActionBar(toolbar);
 
-        setupRecyclerView();
-        //updateRecyclerViewAdapter();
+        updateRecyclerViewAdapter();
 
         // Find the button
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
@@ -55,9 +47,20 @@ public class MainActivity extends AppCompatActivity {
         createGame.setOnClickListener(view -> {
             Intent intent = GameInfoActivity.makeIntent(MainActivity.this, "create");
             startActivity(intent);
+            //startActivityForResult(intent, RESULT_OK);
+            //updateRecyclerViewAdapter();
+            Toast.makeText(MainActivity.this, "Added game. " + gameManager.getNumberOfGames() + " in total", Toast.LENGTH_SHORT).show();
         });
 
 
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateRecyclerViewAdapter(){
+        // gameInfoCardModels.clear();
+        setupGameInfoModels();
+        setupRecyclerView();
+        adapter.notifyDataSetChanged();
     }
 
     private void setupRecyclerView(){
@@ -68,16 +71,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void updateRecyclerViewAdapter(){
-        gameInfoCardModels.clear();
-        setupGameInfoModels();
-        adapter.notifyDataSetChanged();
-    }
-
     private void setupGameInfoModels() {
 
-        // populateArrayList();
+        gameInfoCardModels.clear();
 
         ArrayList<Game> gameList = gameManager.getGameList();
         for (int i = 0; i < gameList.size(); i++){
