@@ -5,8 +5,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -45,15 +47,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setupRecyclerView();
-        updateRecyclerViewAdapter();
+        //updateRecyclerViewAdapter();
 
         // Find the button
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
         // Set button behaviour
         createGame.setOnClickListener(view -> {
-            //Toast.makeText(MainActivity.this, "Regenerated random list.", Toast.LENGTH_SHORT).show();
-            //updateRecyclerViewAdapter();
-
             Intent intent = GameInfoActivity.makeIntent(MainActivity.this, "create");
             startActivity(intent);
         });
@@ -69,23 +68,23 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerViewAdapter(){
         gameInfoCardModels.clear();
-        while (gameManager.getNumberOfGames() != 0){
-            gameManager.deleteSpecificGame(0);
-        }
         setupGameInfoModels();
         adapter.notifyDataSetChanged();
     }
 
     private void setupGameInfoModels() {
 
-        populateArrayList();
+        // populateArrayList();
 
         ArrayList<Game> gameList = gameManager.getGameList();
         for (int i = 0; i < gameList.size(); i++){
             gameInfoCardModels.add(new GameInfoCardModel(gameList.get(i)));
         }
+
+        // Log.i("GameManagerSize","GAME MANAGER CURRENTLY HAS " + gameList.size() + " GAMES REGISTERED");
     }
 
     // below here is only for testing purposes
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < numberOfPlayers; i++){
-            int playerNumber = i;
             int sumOfCards = random.nextInt(50 - 10) + 10;
             int numOfWagers = random.nextInt(6);
             int numOfCards = random.nextInt(16 - numOfWagers) + numOfWagers;
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             //int numOfWagers = ThreadLocalRandom.current().nextInt(0, 5 + 1);
             //int numOfCards = ThreadLocalRandom.current().nextInt(numOfWagers, 15 + 1);
 
-            PlayerScore playerScore = new PlayerScore(playerNumber, numOfCards, sumOfCards, numOfWagers);
+            PlayerScore playerScore = new PlayerScore(i, numOfCards, sumOfCards, numOfWagers);
             playerList.add(playerScore);
 
         }
