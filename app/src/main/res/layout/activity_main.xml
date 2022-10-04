@@ -37,6 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/fab_add"
-        android:contentDescription="Create Game" />
+        android:contentDescription="@string/create_game_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -224,15 +224,12 @@ public class GameInfoActivity extends AppCompatActivity {
     }
 
     private boolean checkIfEmpty(){
-        if (    player1NumberOfCards.getText().toString().trim().isEmpty() ||
+        return player1NumberOfCards.getText().toString().trim().isEmpty() ||
                 player1SumOfCards.getText().toString().trim().isEmpty() ||
                 player1NumberOfWagers.getText().toString().trim().isEmpty() ||
                 player2NumberOfCards.getText().toString().trim().isEmpty() ||
                 player2SumOfCards.getText().toString().trim().isEmpty() ||
-                player2NumberOfWagers.getText().toString().trim().isEmpty()){
-            return true;
-        }
-        return false;
+                player2NumberOfWagers.getText().toString().trim().isEmpty();
     }
 
 

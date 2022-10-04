@@ -3,6 +3,17 @@
     <string name="game_list">Games Played</string>
     <string name="create_game">Create Game</string>
     <string name="edit_game">Edit Game</string>
+    <string name="save_button">SAVE</string>
+    <string name="current_date_placeholder">currentDate</string>
+    <string name="number_of_cards_message">Number of cards:</string>
+    <string name="sum_of_cards_message">Sum of cards:</string>
+    <string name="number_of_wagers_message">Number of wagers:</string>
+    <string name="scores_message">Scores:</string>
+    <string name="edit_text_null">--</string>
+    <string name="player_1_title">Player 1</string>
+    <string name="player_2_title">Player 2</string>
+    <string name="score_realtime_calculation_awaiting">Awaiting input...</string>
+    <string name="create_game_description">Create Game</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>
