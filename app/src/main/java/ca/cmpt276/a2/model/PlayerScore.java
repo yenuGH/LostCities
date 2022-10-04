@@ -47,8 +47,20 @@ public class PlayerScore {
         this.score = score;
     }
 
+    public void editScore(int numberOfCards, int sumOfPointCards, int numberOfWagers){
+        this.numberOfCards = numberOfCards;
+        this.sumOfPointCards = sumOfPointCards;
+        this.numberOfWagers = numberOfWagers;
+
+        calculateScore();
+    }
+
     public int getPlayerNumber() {
         return playerNumber;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public int getNumberOfCards() {
@@ -61,9 +73,5 @@ public class PlayerScore {
 
     public int getSumOfPointCards() {
         return sumOfPointCards;
-    }
-
-    public int getScore() {
-        return score;
     }
 }

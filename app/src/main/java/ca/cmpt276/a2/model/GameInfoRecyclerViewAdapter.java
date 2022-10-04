@@ -80,30 +80,20 @@ public class GameInfoRecyclerViewAdapter extends RecyclerView.Adapter<GameInfoRe
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-
             ivWinner = itemView.findViewById(R.id.ivWinnerIcon);
             tvWinners = itemView.findViewById(R.id.tvWinners);
             tvScores = itemView.findViewById(R.id.tvScores);
             tvDatePlayed = itemView.findViewById(R.id.tvDatePlayed);
             btnEditGame = itemView.findViewById(R.id.btnEditGame);
 
-            //itemView.setOnClickListener(this);
-
             btnEditGame.setOnClickListener( view -> {
                 Intent editGameIntent = GameInfoActivity.makeIntent(context, getAdapterPosition());
                 context.startActivity(editGameIntent);
+                notifyItemChanged(getAdapterPosition());
             });
 
         }
 
-        /*@Override
-        public void onClick(View view) {
-            listener.onClick(view, getAdapterPosition());
-        }*/
     }
-
-    /*public interface RecyclerViewClickListener{
-        void onClick(View view, int position);
-    }*/
 
 }

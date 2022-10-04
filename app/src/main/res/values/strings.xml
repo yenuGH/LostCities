@@ -19,6 +19,7 @@
     <string name="scores_placeholder">Scores</string>
     <string name="date_placeholder">Date</string>
     <string name="edit_game_button">EDIT</string>
+    <string name="delete_button">DELETE</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>

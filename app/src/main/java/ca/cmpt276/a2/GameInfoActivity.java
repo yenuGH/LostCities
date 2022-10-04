@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,8 +30,10 @@ public class GameInfoActivity extends AppCompatActivity {
     private final int PLAYER1_NUMBER = 0;
     private final int PLAYER2_NUMBER = 1;
 
-    static String activityTitle;
+    private String activityTitle;
     private GameManager gameManager;
+    private static int gameIndex;
+    private static boolean editGameActivity = false;
 
     // Player 1
     private EditText player1NumberOfCards;
@@ -58,14 +62,15 @@ public class GameInfoActivity extends AppCompatActivity {
 
     // When an intent is created with only a context, it is used for creating a new game.
     public static Intent makeIntent(Context context) {
-        activityTitle = "Create Game";
+        editGameActivity = false;
         return new Intent(context, GameInfoActivity.class);
     }
-    // When an intent is created with a context and is passed in a Game object,
+    // When an intent is created with a context and integer of a card position,
     // It is used for editing a game.
     public static Intent makeIntent(Context context, int position){
-        activityTitle = "Edit Game";
-        Toast.makeText(context, "Editing Game #" + position, Toast.LENGTH_SHORT).show();
+        gameIndex = position;
+        editGameActivity = true;
+        // Toast.makeText(context, "Editing Game #" + position, Toast.LENGTH_SHORT).show();
         return new Intent(context, GameInfoActivity.class);
     }
 
@@ -74,10 +79,20 @@ public class GameInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_info);
 
+        // Set the fields depending on what kind of activity it is
+        if (editGameActivity == false){
+            activityTitle = "Create Game";
+        }
+        if (editGameActivity == true){
+            activityTitle = "Edit Game";
+            gameManager = GameManager.getInstance();
+        }
+
         Toolbar toolbarGameInfo = findViewById(R.id.tbGameInfo);
         setSupportActionBar(toolbarGameInfo);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setTitle(activityTitle);
+
 
         // One great thing about the EditText is that it will not allow negative integers to be inputted!
         // So we don't have to check for any non-positive integers c:
@@ -116,13 +131,37 @@ public class GameInfoActivity extends AppCompatActivity {
         player2SumOfCards.addTextChangedListener(inputTextWatcher);
         player2NumberOfWagers.addTextChangedListener(inputTextWatcher);
 
-        // Set up the save button
         Button saveGameInfo = findViewById(R.id.btnSaveGameInfo);
-        saveGameInfo.setOnClickListener(view -> {
-            saveGame();
-            setResult(Activity.RESULT_OK);
-            finish();
-        });
+        Button deleteGameInfo = findViewById(R.id.btnDeleteGameInfo);
+
+        // Set up the save button for creating a new game
+        if (editGameActivity == false){
+            deleteGameInfo.setVisibility(View.INVISIBLE);
+
+            saveGameInfo.setOnClickListener(view -> {
+                saveGame();
+                setResult(Activity.RESULT_OK);
+                finish();
+            });
+        }
+        if (editGameActivity == true){
+            gameManager = GameManager.getInstance();
+            deleteGameInfo.setVisibility(View.VISIBLE);
+            saveGameInfo.setText("EDIT");
+            setEditInfo();
+
+            saveGameInfo.setOnClickListener(view -> {
+                editGame();
+                setResult(Activity.RESULT_OK);
+                finish();
+            });
+
+            deleteGameInfo.setOnClickListener(view -> {
+                deleteGame();
+                setResult(Activity.RESULT_OK);
+                finish();
+            });
+        }
 
 
     }
@@ -161,6 +200,37 @@ public class GameInfoActivity extends AppCompatActivity {
         playerList.add(player2);
 
         gameManager.createGame(playerList);
+    }
+
+    private void editGame() {
+        Game editGame = gameManager.getSpecificGame(gameIndex);
+        ArrayList<PlayerScore> playerScores = editGame.getPlayerList();
+
+        updateIntegersFromInput();
+
+        playerScores.get(PLAYER1_NUMBER).editScore(p1Cards, p1Sum, p1Wagers);
+        playerScores.get(PLAYER2_NUMBER).editScore(p2Cards, p2Sum, p2Wagers);
+    }
+    private void setEditInfo(){
+        // Set the EditText fields to the existing values when editing
+        Game editGame = gameManager.getSpecificGame(gameIndex);
+
+        PlayerScore player1 = editGame.getPlayerList().get(PLAYER1_NUMBER);
+        PlayerScore player2 = editGame.getPlayerList().get(PLAYER2_NUMBER);
+
+        player1NumberOfCards.setText(String.valueOf(player1.getNumberOfCards()));
+        player1SumOfCards.setText(String.valueOf(player1.getSumOfPointCards()));
+        player1NumberOfWagers.setText(String.valueOf(player1.getNumberOfWagers()));
+        player1Score.setText(String.valueOf(player1.getScore()));
+
+        player2NumberOfCards.setText(String.valueOf(player2.getNumberOfCards()));
+        player2SumOfCards.setText(String.valueOf(player2.getSumOfPointCards()));
+        player2NumberOfWagers.setText(String.valueOf(player2.getNumberOfWagers()));
+        player2Score.setText(String.valueOf(player2.getScore()));
+    }
+
+    private void deleteGame(){
+        gameManager.deleteSpecificGame(gameIndex);
     }
 
     private void resetWinnersRealTimeUpdate() {

@@ -54,12 +54,6 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
         // Set button behaviour
         createGame.setOnClickListener(view -> {
-            //Intent intent = GameInfoActivity.makeIntent(MainActivity.this, "create");
-            //startActivity(intent);
-            //startActivityForResult(intent, RESULT_OK);
-            //updateRecyclerViewAdapter();
-            //Toast.makeText(MainActivity.this, "Added game. " + gameManager.getNumberOfGames() + " in total", Toast.LENGTH_SHORT).show();
-
             Intent gameInfoIntent = GameInfoActivity.makeIntent(MainActivity.this);
             gameInfoIntentLauncher.launch(gameInfoIntent);
 
