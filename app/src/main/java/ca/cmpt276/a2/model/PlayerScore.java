@@ -31,6 +31,7 @@ public class PlayerScore {
 
         // if there are 0 cards, we will just return a score of 0
         if (numberOfCards == 0) {
+            this.score = 0;
             return;
         }
 
