@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -141,6 +142,7 @@ public class GameInfoActivity extends AppCompatActivity {
             saveGameInfo.setOnClickListener(view -> {
                 saveGame();
                 setResult(Activity.RESULT_OK);
+                Toast.makeText(GameInfoActivity.this, "Game created.", Toast.LENGTH_SHORT).show();
                 finish();
             });
         }
@@ -153,17 +155,35 @@ public class GameInfoActivity extends AppCompatActivity {
             saveGameInfo.setOnClickListener(view -> {
                 editGame();
                 setResult(Activity.RESULT_OK);
+                Toast.makeText(GameInfoActivity.this, "Game edited.", Toast.LENGTH_SHORT).show();
                 finish();
             });
 
             deleteGameInfo.setOnClickListener(view -> {
                 deleteGame();
                 setResult(Activity.RESULT_OK);
+                Toast.makeText(GameInfoActivity.this, "Game deleted.", Toast.LENGTH_SHORT).show();
                 finish();
             });
         }
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        switch(menuItem.getItemId()){
+            case android.R.id.home:
+                setResult(Activity.RESULT_CANCELED);
+                if (editGameActivity == false){
+                    Toast.makeText(GameInfoActivity.this, "Game creation cancelled.", Toast.LENGTH_SHORT).show();
+                }
+                if (editGameActivity == true){
+                    Toast.makeText(GameInfoActivity.this, "Changes discarded.", Toast.LENGTH_SHORT).show();
+                }
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
     }
 
     private final TextWatcher inputTextWatcher = new TextWatcher() {
