@@ -1,11 +1,20 @@
 package ca.cmpt276.a2;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,15 +54,31 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton createGame = findViewById(R.id.fabCreateGame);
         // Set button behaviour
         createGame.setOnClickListener(view -> {
-            Intent intent = GameInfoActivity.makeIntent(MainActivity.this, "create");
-            startActivity(intent);
+            //Intent intent = GameInfoActivity.makeIntent(MainActivity.this, "create");
+            //startActivity(intent);
             //startActivityForResult(intent, RESULT_OK);
             //updateRecyclerViewAdapter();
-            Toast.makeText(MainActivity.this, "Added game. " + gameManager.getNumberOfGames() + " in total", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "Added game. " + gameManager.getNumberOfGames() + " in total", Toast.LENGTH_SHORT).show();
+
+            Intent gameInfoIntent = GameInfoActivity.makeIntent(MainActivity.this, "create");
+            gameInfoIntentLauncher.launch(gameInfoIntent);
+
         });
 
 
     }
+
+    ActivityResultLauncher<Intent> gameInfoIntentLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        updateRecyclerViewAdapter();
+                    }
+                }
+            });
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerViewAdapter(){
@@ -72,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupGameInfoModels() {
-
         gameInfoCardModels.clear();
 
         ArrayList<Game> gameList = gameManager.getGameList();
@@ -80,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             gameInfoCardModels.add(new GameInfoCardModel(gameList.get(i)));
         }
 
-        // Log.i("GameManagerSize","GAME MANAGER CURRENTLY HAS " + gameList.size() + " GAMES REGISTERED");
     }
 
     // below here is only for testing purposes
@@ -104,9 +127,6 @@ public class MainActivity extends AppCompatActivity {
             int sumOfCards = random.nextInt(50 - 10) + 10;
             int numOfWagers = random.nextInt(6);
             int numOfCards = random.nextInt(16 - numOfWagers) + numOfWagers;
-            //int sumOfCards = ThreadLocalRandom.current().nextInt(10, 50 + 1);
-            //int numOfWagers = ThreadLocalRandom.current().nextInt(0, 5 + 1);
-            //int numOfCards = ThreadLocalRandom.current().nextInt(numOfWagers, 15 + 1);
 
             PlayerScore playerScore = new PlayerScore(i, numOfCards, sumOfCards, numOfWagers);
             playerList.add(playerScore);

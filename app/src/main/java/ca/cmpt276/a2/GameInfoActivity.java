@@ -3,6 +3,7 @@ package ca.cmpt276.a2;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -118,6 +119,7 @@ public class GameInfoActivity extends AppCompatActivity {
         Button saveGameInfo = findViewById(R.id.btnSaveGameInfo);
         saveGameInfo.setOnClickListener(view -> {
             saveGame();
+            setResult(Activity.RESULT_OK);
             finish();
         });
 
@@ -158,8 +160,6 @@ public class GameInfoActivity extends AppCompatActivity {
         playerList.add(player2);
 
         gameManager.createGame(playerList);
-
-
     }
 
     private void resetWinnersRealTimeUpdate() {
