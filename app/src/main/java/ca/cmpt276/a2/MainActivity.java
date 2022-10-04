@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             //updateRecyclerViewAdapter();
             //Toast.makeText(MainActivity.this, "Added game. " + gameManager.getNumberOfGames() + " in total", Toast.LENGTH_SHORT).show();
 
-            Intent gameInfoIntent = GameInfoActivity.makeIntent(MainActivity.this, "create");
+            Intent gameInfoIntent = GameInfoActivity.makeIntent(MainActivity.this);
             gameInfoIntentLauncher.launch(gameInfoIntent);
 
         });

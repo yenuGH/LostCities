@@ -1,6 +1,8 @@
 package ca.cmpt276.a2.model;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,21 +10,29 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import ca.cmpt276.a2.GameInfoActivity;
+import ca.cmpt276.a2.MainActivity;
 import ca.cmpt276.a2.R;
 
 public class GameInfoRecyclerViewAdapter extends RecyclerView.Adapter<GameInfoRecyclerViewAdapter.MyViewHolder>{
 
     Context context;
     ArrayList<GameInfoCardModel> gameInfoCardModels;
+    //private RecyclerViewClickListener listener;
 
     public GameInfoRecyclerViewAdapter(Context context, ArrayList<GameInfoCardModel> gameInfoCardModels){
         this.context = context;
         this.gameInfoCardModels = gameInfoCardModels;
+        //this.listener = listener;
     }
 
     @NonNull
@@ -53,7 +63,11 @@ public class GameInfoRecyclerViewAdapter extends RecyclerView.Adapter<GameInfoRe
         return gameInfoCardModels.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public ArrayList<GameInfoCardModel> getGameInfoCardModels(){
+        return gameInfoCardModels;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         // Grabbing the views from our recyclerview layout file
         // Can think of this as an onCreate method
 
@@ -66,11 +80,30 @@ public class GameInfoRecyclerViewAdapter extends RecyclerView.Adapter<GameInfoRe
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+
             ivWinner = itemView.findViewById(R.id.ivWinnerIcon);
             tvWinners = itemView.findViewById(R.id.tvWinners);
             tvScores = itemView.findViewById(R.id.tvScores);
             tvDatePlayed = itemView.findViewById(R.id.tvDatePlayed);
             btnEditGame = itemView.findViewById(R.id.btnEditGame);
+
+            //itemView.setOnClickListener(this);
+
+            btnEditGame.setOnClickListener( view -> {
+                Intent editGameIntent = GameInfoActivity.makeIntent(context, getAdapterPosition());
+                context.startActivity(editGameIntent);
+            });
+
         }
+
+        /*@Override
+        public void onClick(View view) {
+            listener.onClick(view, getAdapterPosition());
+        }*/
     }
+
+    /*public interface RecyclerViewClickListener{
+        void onClick(View view, int position);
+    }*/
+
 }

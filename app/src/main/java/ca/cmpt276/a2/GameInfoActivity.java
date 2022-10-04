@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import ca.cmpt276.a2.model.Game;
 import ca.cmpt276.a2.model.GameManager;
 import ca.cmpt276.a2.model.PlayerScore;
 
@@ -54,17 +55,17 @@ public class GameInfoActivity extends AppCompatActivity {
 
     // Realtime score calculation text
     private TextView winnersRealTimeUpdate;
-    private LocalDateTime datePlayed;
 
-    public static Intent makeIntent(Context context, String name) {
-
-        if (name.equals("create")){
-            activityTitle = "Create Game";
-        }
-        if (name.equals("edit")){
-            activityTitle = "Edit Game";
-        }
-
+    // When an intent is created with only a context, it is used for creating a new game.
+    public static Intent makeIntent(Context context) {
+        activityTitle = "Create Game";
+        return new Intent(context, GameInfoActivity.class);
+    }
+    // When an intent is created with a context and is passed in a Game object,
+    // It is used for editing a game.
+    public static Intent makeIntent(Context context, int position){
+        activityTitle = "Edit Game";
+        Toast.makeText(context, "Editing Game #" + position, Toast.LENGTH_SHORT).show();
         return new Intent(context, GameInfoActivity.class);
     }
 
@@ -86,7 +87,7 @@ public class GameInfoActivity extends AppCompatActivity {
         // Get the date!
         // The date is important!
         TextView currentDate = findViewById(R.id.tvCurrentDate);
-        datePlayed = LocalDateTime.now();
+        LocalDateTime datePlayed = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d @ H:mma");
         String formattedDatePlayed = datePlayed.format(dateTimeFormatter);
         currentDate.setText(formattedDatePlayed);
@@ -129,7 +130,7 @@ public class GameInfoActivity extends AppCompatActivity {
     private final TextWatcher inputTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            winnersRealTimeUpdate.setText("Awaiting input...");
+
         }
 
         @Override

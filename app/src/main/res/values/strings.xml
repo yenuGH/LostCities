@@ -14,6 +14,11 @@
     <string name="player_2_title">Player 2</string>
     <string name="score_realtime_calculation_awaiting">Awaiting input...</string>
     <string name="create_game_description">Create Game</string>
+    <string name="winner_icon">WinnerIcon</string>
+    <string name="winners_placeholder">Winners:</string>
+    <string name="scores_placeholder">Scores</string>
+    <string name="date_placeholder">Date</string>
+    <string name="edit_game_button">EDIT</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>
