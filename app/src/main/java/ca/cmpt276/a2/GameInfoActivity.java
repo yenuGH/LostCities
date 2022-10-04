@@ -210,6 +210,8 @@ public class GameInfoActivity extends AppCompatActivity {
 
         playerScores.get(PLAYER1_NUMBER).editScore(p1Cards, p1Sum, p1Wagers);
         playerScores.get(PLAYER2_NUMBER).editScore(p2Cards, p2Sum, p2Wagers);
+
+        editGame.calculateScores();
     }
     private void setEditInfo(){
         // Set the EditText fields to the existing values when editing

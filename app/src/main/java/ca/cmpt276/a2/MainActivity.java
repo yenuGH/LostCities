@@ -55,24 +55,15 @@ public class MainActivity extends AppCompatActivity {
         // Set button behaviour
         createGame.setOnClickListener(view -> {
             Intent gameInfoIntent = GameInfoActivity.makeIntent(MainActivity.this);
-            gameInfoIntentLauncher.launch(gameInfoIntent);
-
+            startActivity(gameInfoIntent);
         });
-
-
     }
 
-    ActivityResultLauncher<Intent> gameInfoIntentLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        updateRecyclerViewAdapter();
-                    }
-                }
-            });
+    @Override
+    public void onResume(){
+        super.onResume();
+        updateRecyclerViewAdapter();
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerViewAdapter(){
