@@ -211,8 +211,8 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
         createConfirmationDialog(CANCEL_DIALOG_KEY);
     }
 
-    private void createErrorDialog(String key) {
-        ErrorDialog errorDialog = ErrorDialog.makeInstance(key);
+    private void createErrorDialog(String dialogKey) {
+        ErrorDialog errorDialog = ErrorDialog.makeInstance(dialogKey);
         errorDialog.show(getSupportFragmentManager(), EMPTY_DIALOG_KEY);
 
     }

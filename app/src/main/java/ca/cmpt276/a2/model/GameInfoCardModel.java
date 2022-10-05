@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import ca.cmpt276.a2.R;
 
+// https://www.youtube.com/watch?v=Mc0XT58A1Z4
 public class GameInfoCardModel {
 
     private static final int[] GAME_WINNER_ICONS = {R.drawable.winner_1, R.drawable.winner_2, R.drawable.winner_draw};

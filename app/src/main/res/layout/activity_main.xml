@@ -6,6 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/peeposad_hint_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:text="@string/peeposad_hint_message"
+            android:textAllCaps="true"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.73"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/peeposad_message" />
+
+        <ImageView
+            android:id="@+id/peeposad"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/peeposad_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/peeposad_highquality" />
+
+        <TextView
+            android:id="@+id/peeposad_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/peeposad_message"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/peeposad" />
+
+        <ImageView
+            android:id="@+id/peeposad_hint"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/peeposad_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.73"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/peeposad_hint_message"
+            app:srcCompat="@drawable/arrow_down_right" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbGamesPlayed"
         android:layout_width="0dp"

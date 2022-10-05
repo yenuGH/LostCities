@@ -20,6 +20,10 @@
     <string name="date_placeholder">Date</string>
     <string name="edit_game_button">EDIT</string>
     <string name="delete_button">DELETE</string>
+    <string name="peeposad_message">peeposad_message</string>
+    <string name="peeposad_image">peeposad_image</string>
+    <string name="peeposad_hint">peeposad_hint</string>
+    <string name="peeposad_hint_message">Make peepo happy!</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>

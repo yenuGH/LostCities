@@ -69,6 +69,7 @@ public class ConfirmationDialog extends AppCompatDialogFragment {
         }
     }
 
+    // https://www.youtube.com/watch?v=ARezg1D9Zd0
     public interface ConfirmationDialogListener{
         void userConfirm(String key);
     }

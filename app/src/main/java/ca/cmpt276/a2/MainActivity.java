@@ -18,6 +18,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     GameManager gameManager = GameManager.getInstance();
-    Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tbGamesPlayed);
         setSupportActionBar(toolbar);
 
+        setupRecyclerView();
         updateRecyclerViewAdapter();
 
         // Find the button
@@ -67,13 +70,35 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerViewAdapter(){
-        // gameInfoCardModels.clear();
+        emptyStateHint();
         setupGameInfoModels();
-        setupRecyclerView();
         adapter.notifyDataSetChanged();
     }
 
+    private void emptyStateHint(){
+        ImageView peeposad = findViewById(R.id.peeposad);
+        TextView peeposadMessage = findViewById(R.id.peeposad_message);
+        ImageView peeposadHint = findViewById(R.id.peeposad_hint);
+        TextView peeposadHintMessage = findViewById(R.id.peeposad_hint_message);
+
+        peeposadMessage.setText("Look at peepo! He's sad :c\nHe hasn't played any games!\nPlay games to make peepo happy again!");
+
+        if (gameManager.getGameList().size() == 0){
+            peeposad.setVisibility(View.VISIBLE);
+            peeposadMessage.setVisibility(View.VISIBLE);
+            peeposadHint.setVisibility(View.VISIBLE);
+            peeposadHintMessage.setVisibility(View.VISIBLE);
+        }
+        else {
+            peeposad.setVisibility(View.INVISIBLE);
+            peeposadMessage.setVisibility(View.INVISIBLE);
+            peeposadHint.setVisibility(View.INVISIBLE);
+            peeposadHintMessage.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void setupRecyclerView(){
+        // https://www.youtube.com/watch?v=Mc0XT58A1Z4
         recyclerView = findViewById(R.id.rvGamesList);
         setupGameInfoModels();
         adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
@@ -91,33 +116,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // below here is only for testing purposes
-    private void populateArrayList(){
-        for (int i = 0; i < 5; i++){
-            int randomInt = random.nextInt(2) + 1;
-            newGame(randomInt);
-        }
-    }
-
-    private void newGame(int numberOfPlayers) {
-        ArrayList<PlayerScore> playerList = createPlayers(numberOfPlayers);
-        gameManager.createGame(playerList);
-    }
-
-    private ArrayList<PlayerScore> createPlayers(int numberOfPlayers) {
-        ArrayList<PlayerScore> playerList = new ArrayList<>();
-
-
-        for (int i = 0; i < numberOfPlayers; i++){
-            int sumOfCards = random.nextInt(50 - 10) + 10;
-            int numOfWagers = random.nextInt(6);
-            int numOfCards = random.nextInt(16 - numOfWagers) + numOfWagers;
-
-            PlayerScore playerScore = new PlayerScore(i, numOfCards, sumOfCards, numOfWagers);
-            playerList.add(playerScore);
-
-        }
-
-        return playerList;
-    }
 }

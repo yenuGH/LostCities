@@ -23,6 +23,7 @@ import ca.cmpt276.a2.GameInfoActivity;
 import ca.cmpt276.a2.MainActivity;
 import ca.cmpt276.a2.R;
 
+// https://www.youtube.com/watch?v=Mc0XT58A1Z4
 public class GameInfoRecyclerViewAdapter extends RecyclerView.Adapter<GameInfoRecyclerViewAdapter.MyViewHolder>{
 
     Context context;
