@@ -1,44 +1,64 @@
 package ca.cmpt276.a2;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Random;
 
 import ca.cmpt276.a2.model.Game;
 import ca.cmpt276.a2.model.GameManager;
-import ca.cmpt276.a2.model.PlayerScore;
+
 import ca.cmpt276.a2.model.GameInfoCardModel;
 import ca.cmpt276.a2.model.GameInfoRecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<GameInfoCardModel> gameInfoCardModels = new ArrayList<>();
-    GameInfoRecyclerViewAdapter adapter;
-    RecyclerView recyclerView;
+    public static final String SHARED_PREFERENCES_GAME_MANAGER_NAME = "Games Manager Shared Preferences";
+    public static final String JSON_NAME = "GamesList";
+
+    private ArrayList<GameInfoCardModel> gameInfoCardModels = new ArrayList<>();
+    private GameInfoRecyclerViewAdapter adapter;
+
+    // https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html
+    // https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/time/LocalDateTime.html
+    // https://www.javadoc.io/doc/com.google.code.gson/gson/2.8.1/com/google/gson/TypeAdapter.html
+    // https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/stream/JsonWriter.html
+    // https://stackoverflow.com/questions/61432170/how-to-serialize-localdate-using-gson
+
+    private Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+            new TypeAdapter<LocalDateTime>() {
+                @Override
+                public void write(JsonWriter jsonWriter,
+                                  LocalDateTime localDateTime) throws IOException {
+                    jsonWriter.value(localDateTime.toString());
+                }
+                @Override
+                public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                    return LocalDateTime.parse(jsonReader.nextString());
+                }
+            }).create();
 
     GameManager gameManager = GameManager.getInstance();
 
@@ -50,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tbGamesPlayed);
         setSupportActionBar(toolbar);
 
+        loadData();
         setupRecyclerView();
         updateRecyclerViewAdapter();
 
@@ -68,11 +89,59 @@ public class MainActivity extends AppCompatActivity {
         updateRecyclerViewAdapter();
     }
 
+    @Override
+    public void onBackPressed(){
+        saveData();
+        finish();
+        System.exit(0);
+        // Toast.makeText(MainActivity.this, "Hello.", Toast.LENGTH_SHORT).show();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerViewAdapter(){
         emptyStateHint();
         setupGameInfoModels();
         adapter.notifyDataSetChanged();
+    }
+
+    private void setupRecyclerView(){
+        // https://www.youtube.com/watch?v=Mc0XT58A1Z4
+        RecyclerView recyclerView = findViewById(R.id.rvGamesList);
+        setupGameInfoModels();
+        adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+    }
+
+    private void setupGameInfoModels() {
+        gameInfoCardModels.clear();
+
+        ArrayList<Game> gameList = gameManager.getGameList();
+        for (int i = 0; i < gameList.size(); i++){
+            gameInfoCardModels.add(new GameInfoCardModel(gameList.get(i)));
+        }
+
+    }
+
+    private void saveData(){
+        // https://www.youtube.com/watch?v=jcliHGR3CHo
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_GAME_MANAGER_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String json = gson.toJson(gameManager.getGameList());
+        editor.putString(JSON_NAME, json);
+        editor.apply();
+    }
+
+    private void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_GAME_MANAGER_NAME, MODE_PRIVATE);
+
+        String json = sharedPreferences.getString(JSON_NAME, null);
+        if (json != null){
+            Type type = new TypeToken<ArrayList<Game>>() {}.getType();
+            ArrayList<Game> loadGameList = gson.fromJson(json, type);
+            gameManager.loadGames(loadGameList);
+        }
     }
 
     private void emptyStateHint(){
@@ -95,25 +164,6 @@ public class MainActivity extends AppCompatActivity {
             peeposadHint.setVisibility(View.INVISIBLE);
             peeposadHintMessage.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private void setupRecyclerView(){
-        // https://www.youtube.com/watch?v=Mc0XT58A1Z4
-        recyclerView = findViewById(R.id.rvGamesList);
-        setupGameInfoModels();
-        adapter = new GameInfoRecyclerViewAdapter(MainActivity.this, gameInfoCardModels);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-    }
-
-    private void setupGameInfoModels() {
-        gameInfoCardModels.clear();
-
-        ArrayList<Game> gameList = gameManager.getGameList();
-        for (int i = 0; i < gameList.size(); i++){
-            gameInfoCardModels.add(new GameInfoCardModel(gameList.get(i)));
-        }
-
     }
 
 }

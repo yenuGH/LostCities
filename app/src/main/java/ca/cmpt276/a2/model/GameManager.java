@@ -1,16 +1,19 @@
 package ca.cmpt276.a2.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.ArrayList;
 
 public class GameManager {
 
     ArrayList<Game> gameList = new ArrayList<>();
+    SharedPreferences sharedPreferences;
 
     public void createGame(ArrayList<PlayerScore> playerList) {
         Game newGame = new Game(playerList);
         gameList.add(newGame);
     }
-
 
     // Singleton support
     private static GameManager instance;
@@ -47,8 +50,10 @@ public class GameManager {
         gameList.remove(index);
     }
 
-    public int getNumberOfGames() {
-        return gameList.size();
+    public void loadGames(ArrayList<Game> gamesList){
+        for (Game game : gamesList){
+            gameList.add(game);
+        }
     }
 
     public ArrayList<Game> getGameList() { return gameList; }
