@@ -26,8 +26,6 @@ import ca.cmpt276.a2.dialogs.ErrorDialog;
 import ca.cmpt276.a2.model.Game;
 import ca.cmpt276.a2.model.GameManager;
 import ca.cmpt276.a2.model.PlayerScore;
-import ca.cmpt276.a2.dialogs.SaveErrorDialog;
-import ca.cmpt276.a2.dialogs.ZeroCardsErrorDialog;
 
 public class GameInfoActivity extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
 
