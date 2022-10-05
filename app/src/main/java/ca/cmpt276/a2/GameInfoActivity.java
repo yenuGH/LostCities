@@ -159,9 +159,15 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
                     finish();
                 }
                 catch (NumberFormatException numberFormatException){
+                    // When any fields are empty.
+                    // When the EditTexts are parsed and there is nothing in it
+                    // It will throw this error
                     createErrorDialog("empty");
                 }
                 catch (ArithmeticException arithmeticException){
+                    // When the score is being calculated but
+                    // sees that number of cards is 0 but everything else isn't 0
+                    // it will throw a custom Arithmetic error
                     createErrorDialog("zero");
                 }
             });
@@ -280,6 +286,7 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
         Game editGame = gameManager.getSpecificGame(gameIndex);
         ArrayList<PlayerScore> playerScores = editGame.getPlayerList();
 
+        // Get the existing instances of the players
         PlayerScore player1 = editGame.getPlayerList().get(PLAYER1_NUMBER);
         PlayerScore player2 = editGame.getPlayerList().get(PLAYER2_NUMBER);
 
@@ -288,9 +295,11 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
             throw new ArithmeticException("0 cards with non-zero values");
         }
 
+        // Use the getters to replace their scores
         player1.editScore(p1Cards, p1Sum, p1Wagers);
         player2.editScore(p2Cards, p2Sum, p2Wagers);
 
+        // Recalculate the scores
         editGame.calculateScores();
     }
 
@@ -350,6 +359,8 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
     }
 
     private void setDatePlayed(boolean editGameActivity) {
+        // To either grab the existing date from the game or to set the current date for a new game
+
         TextView currentDate = findViewById(R.id.tvCurrentDate);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d @ H:mma");
 
@@ -364,6 +375,7 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
     }
 
     private void updateIntegersFromInput(){
+        // Parse the integers from the text fields
         p1Cards = Integer.parseInt(player1NumberOfCards.getText().toString());
         p1Sum = Integer.parseInt(player1SumOfCards.getText().toString());
         p1Wagers = Integer.parseInt(player1NumberOfWagers.getText().toString());
@@ -397,6 +409,8 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
     }
 
     private boolean checkIfEmpty(){
+        // If any of the fields are empty, return true
+        // To prevent realtime score calculation errors
         return player1NumberOfCards.getText().toString().trim().isEmpty() ||
                 player1SumOfCards.getText().toString().trim().isEmpty() ||
                 player1NumberOfWagers.getText().toString().trim().isEmpty() ||
@@ -406,6 +420,8 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
     }
 
     private boolean checkIfIllegal(){
+        // If either players have 0 cards, but have a sum or amount of wagers > 0
+        // Used to prevent score saving in this case
         return (p1Cards == 0 && (p1Sum > 0 || p1Wagers > 0)) || (p2Cards == 0 && (p2Sum > 0 || p2Wagers > 0));
     }
 

@@ -73,12 +73,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume(){
-        super.onResume();
+        // When the activity is resumed (previous activity is popped off the stack) and is not reloaded,
+        // Update the RecyclerView.
         updateRecyclerViewAdapter();
+        super.onResume();
     }
 
     @Override
     public void onBackPressed(){
+        // This is when the back button (on the bottom of the screen) is pressed
+        // Just save the data every time the main activity instance is exited
         saveData();
     }
 
@@ -99,8 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupGameInfoModels() {
+        // clear the card models the adapter uses to populate
         gameInfoCardModels.clear();
-
+        // Then repopulate the card models arraylist
         ArrayList<Game> gameList = gameManager.getGameList();
         for (int i = 0; i < gameList.size(); i++){
             gameInfoCardModels.add(new GameInfoCardModel(gameList.get(i)));
@@ -137,6 +142,9 @@ public class MainActivity extends AppCompatActivity {
         String json = gson.toJson(gameManager.getGameList());
         editor.putString(JSON_NAME, json);
         editor.apply();
+        // gameManager's gamelist is cleared because on relaunch of the activity
+        // will repopulate and possibly create duplicates if the instance is not fully
+        // closed but reopned from recent apps
         gameManager.getGameList().clear();
         finishAffinity();
     }

@@ -23,6 +23,8 @@ public class ConfirmationDialog extends AppCompatDialogFragment {
 
     // https://www.linkedin.com/learning/android-development-tips/create-a-reusable-dialog-class
     public static ConfirmationDialog makeInstance(String dialogKey){
+        // Based on the key that is passed in
+        // Dialog is reused for any activities with specific messages which require confirmation
         Bundle args = new Bundle();
         args.putString(DIALOG_KEY, dialogKey);
 
@@ -51,6 +53,8 @@ public class ConfirmationDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         extractBundleData();
 
+        // Sends the key into the listener interface to send back to the GameInfoActivity
+        // So we can differentiate which action to perform on a certain button press
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title)
                 .setMessage(message)
