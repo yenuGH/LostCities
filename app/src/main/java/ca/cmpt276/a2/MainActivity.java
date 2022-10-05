@@ -126,10 +126,12 @@ public class MainActivity extends AppCompatActivity {
                                       LocalDateTime localDateTime) throws IOException {
                         jsonWriter.value(localDateTime.toString());
                     }
+
                     @Override
                     public LocalDateTime read(JsonReader jsonReader) throws IOException {
                         return LocalDateTime.parse(jsonReader.nextString());
                     }
+
                 }).setPrettyPrinting().create();
 
         String json = gson.toJson(gameManager.getGameList());
