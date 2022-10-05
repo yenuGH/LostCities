@@ -51,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tbGamesPlayed);
         setSupportActionBar(toolbar);
 
+        TextView optionalFeaturesMessage = findViewById(R.id.optionalFeatureList);
+        optionalFeaturesMessage.setText("1. Edit and delete game with confirmation. " +
+                "\n2. Complex list view (multi element layout)." +
+                "\n3. Confirm on cancel edit with dialog." +
+                "\n4. Save data using SharedPreferences and Google Gson." +
+                "\n5. Empty state message with multi-elements.");
+
         loadData();
         setupRecyclerView();
         updateRecyclerViewAdapter();

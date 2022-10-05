@@ -24,6 +24,7 @@
     <string name="peeposad_image">peeposad_image</string>
     <string name="peeposad_hint">peeposad_hint</string>
     <string name="peeposad_hint_message">Make peepo happy!</string>
+    <string name="optional_features">Optional Features</string>
 
     <string-array name="winning_player_options">
         <item>Player 1</item>
