@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,19 +21,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import ca.cmpt276.a2.dialogs.ConfirmationDialog;
+import ca.cmpt276.a2.dialogs.ErrorDialog;
 import ca.cmpt276.a2.model.Game;
 import ca.cmpt276.a2.model.GameManager;
 import ca.cmpt276.a2.model.PlayerScore;
+import ca.cmpt276.a2.dialogs.SaveErrorDialog;
+import ca.cmpt276.a2.dialogs.ZeroCardsErrorDialog;
 
-public class GameInfoActivity extends AppCompatActivity {
+public class GameInfoActivity extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
 
+    public static final String EMPTY_DIALOG_KEY = "empty";
+    private static final String GAME_INDEX = "Game Index";
+    private static final String EDIT_GAME_ACTIVITY = "Edit Game Activity";
+    public static final String DELETE_DIALOG_KEY = "delete";
+    public static final String CANCEL_DIALOG_KEY = "cancel";
+    public static final String ZERO_DIALOG_KEY = "zero";
     private final int PLAYER1_NUMBER = 0;
     private final int PLAYER2_NUMBER = 1;
 
+    private int gameIndex;
+    private boolean editGameActivity = false;
+
     private String activityTitle;
     private GameManager gameManager;
-    private static int gameIndex;
-    private static boolean editGameActivity = false;
+    private LocalDateTime datePlayed;
 
     // Player 1
     private EditText player1NumberOfCards;
@@ -63,22 +74,29 @@ public class GameInfoActivity extends AppCompatActivity {
 
     // When an intent is created with only a context, it is used for creating a new game.
     public static Intent makeIntent(Context context) {
-        editGameActivity = false;
         return new Intent(context, GameInfoActivity.class);
     }
     // When an intent is created with a context and integer of a card position,
     // It is used for editing a game.
     public static Intent makeIntent(Context context, int position){
-        gameIndex = position;
-        editGameActivity = true;
-        // Toast.makeText(context, "Editing Game #" + position, Toast.LENGTH_SHORT).show();
-        return new Intent(context, GameInfoActivity.class);
+        Intent intent = new Intent(context, GameInfoActivity.class);
+        intent.putExtra(GAME_INDEX, position);
+        intent.putExtra(EDIT_GAME_ACTIVITY, true);
+        return intent;
+    }
+
+    void extractIntentExtras(){
+        Intent intent = getIntent();
+        gameIndex = intent.getIntExtra(GAME_INDEX, -1);
+        editGameActivity = intent.getBooleanExtra(EDIT_GAME_ACTIVITY, false);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_info);
+
+        extractIntentExtras();
 
         // Set the fields depending on what kind of activity it is
         if (editGameActivity == false){
@@ -102,11 +120,7 @@ public class GameInfoActivity extends AppCompatActivity {
         winnersRealTimeUpdate = findViewById(R.id.tvWinnersRealTimeUpdate);
         // Get the date!
         // The date is important!
-        TextView currentDate = findViewById(R.id.tvCurrentDate);
-        LocalDateTime datePlayed = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d @ H:mma");
-        String formattedDatePlayed = datePlayed.format(dateTimeFormatter);
-        currentDate.setText(formattedDatePlayed);
+        setDatePlayed(editGameActivity);
 
         // Get player 1 input
         player1NumberOfCards = findViewById(R.id.etPlayer1NumberOfCards);
@@ -140,10 +154,18 @@ public class GameInfoActivity extends AppCompatActivity {
             deleteGameInfo.setVisibility(View.INVISIBLE);
 
             saveGameInfo.setOnClickListener(view -> {
-                saveGame();
-                setResult(Activity.RESULT_OK);
-                Toast.makeText(GameInfoActivity.this, "Game created.", Toast.LENGTH_SHORT).show();
-                finish();
+                try {
+                    saveGame();
+                    setResult(Activity.RESULT_OK);
+                    Toast.makeText(GameInfoActivity.this, "Game created.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                catch (NumberFormatException numberFormatException){
+                    createErrorDialog("empty");
+                }
+                catch (ArithmeticException arithmeticException){
+                    createErrorDialog("zero");
+                }
             });
         }
         if (editGameActivity == true){
@@ -153,17 +175,23 @@ public class GameInfoActivity extends AppCompatActivity {
             setEditInfo();
 
             saveGameInfo.setOnClickListener(view -> {
-                editGame();
-                setResult(Activity.RESULT_OK);
-                Toast.makeText(GameInfoActivity.this, "Game edited.", Toast.LENGTH_SHORT).show();
-                finish();
+                try {
+                    editGame();
+                    setResult(Activity.RESULT_OK);
+                    Toast.makeText(GameInfoActivity.this, "Game edited.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                catch (NumberFormatException numberFormatException){
+                    createErrorDialog(EMPTY_DIALOG_KEY);
+                }
+                catch (ArithmeticException arithmeticException){
+                    createErrorDialog(ZERO_DIALOG_KEY);
+                }
+
             });
 
             deleteGameInfo.setOnClickListener(view -> {
-                deleteGame();
-                setResult(Activity.RESULT_OK);
-                Toast.makeText(GameInfoActivity.this, "Game deleted.", Toast.LENGTH_SHORT).show();
-                finish();
+                createConfirmationDialog(DELETE_DIALOG_KEY);
             });
         }
     }
@@ -172,17 +200,46 @@ public class GameInfoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch(menuItem.getItemId()){
             case android.R.id.home:
-                setResult(Activity.RESULT_CANCELED);
-                if (editGameActivity == false){
-                    Toast.makeText(GameInfoActivity.this, "Game creation cancelled.", Toast.LENGTH_SHORT).show();
-                }
-                if (editGameActivity == true){
-                    Toast.makeText(GameInfoActivity.this, "Changes discarded.", Toast.LENGTH_SHORT).show();
-                }
-                finish();
+                createConfirmationDialog("cancel");
                 return true;
+
             default:
                 return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        createConfirmationDialog(CANCEL_DIALOG_KEY);
+    }
+
+    private void createErrorDialog(String key) {
+        ErrorDialog errorDialog = ErrorDialog.makeInstance(key);
+        errorDialog.show(getSupportFragmentManager(), EMPTY_DIALOG_KEY);
+
+    }
+
+    private void createConfirmationDialog(String dialogKey){
+        ConfirmationDialog confirmationDialog = ConfirmationDialog.makeInstance(dialogKey);
+        confirmationDialog.show(getSupportFragmentManager(), "Confirmation Dialog");
+    }
+    @Override
+    public void userConfirm(String key){
+        if (key.equals("cancel")){
+            setResult(Activity.RESULT_CANCELED);
+            if (editGameActivity == false){
+                Toast.makeText(GameInfoActivity.this, "Game creation cancelled.", Toast.LENGTH_SHORT).show();
+            }
+            if (editGameActivity == true){
+                Toast.makeText(GameInfoActivity.this, "Changes discarded.", Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        }
+        if (key.equals("delete")){
+            deleteGame();
+            setResult(Activity.RESULT_OK);
+            Toast.makeText(GameInfoActivity.this, "Game deleted.", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -194,13 +251,7 @@ public class GameInfoActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            if (checkIfEmpty()){
-                resetWinnersRealTimeUpdate();
-            }
-            if (!checkIfEmpty()) {
-                setWinnersRealTimeUpdate();
-            }
+            setWinnersRealTimeUpdate();
         }
 
         @Override
@@ -211,6 +262,11 @@ public class GameInfoActivity extends AppCompatActivity {
 
     private void saveGame(){
         gameManager = GameManager.getInstance();
+
+        updateIntegersFromInput();
+        if (checkIfIllegal()){
+            throw new ArithmeticException("0 cards with non-zero values");
+        }
 
         PlayerScore player1 = new PlayerScore(PLAYER1_NUMBER, p1Cards, p1Sum, p1Wagers);
         PlayerScore player2 = new PlayerScore(PLAYER2_NUMBER, p2Cards, p2Sum, p2Wagers);
@@ -227,15 +283,20 @@ public class GameInfoActivity extends AppCompatActivity {
         ArrayList<PlayerScore> playerScores = editGame.getPlayerList();
 
         updateIntegersFromInput();
+        if (checkIfIllegal()){
+            throw new ArithmeticException("0 cards with non-zero values");
+        }
 
         playerScores.get(PLAYER1_NUMBER).editScore(p1Cards, p1Sum, p1Wagers);
         playerScores.get(PLAYER2_NUMBER).editScore(p2Cards, p2Sum, p2Wagers);
 
         editGame.calculateScores();
     }
+
     private void setEditInfo(){
         // Set the EditText fields to the existing values when editing
         Game editGame = gameManager.getSpecificGame(gameIndex);
+        datePlayed = editGame.getDatePlayed();
 
         PlayerScore player1 = editGame.getPlayerList().get(PLAYER1_NUMBER);
         PlayerScore player2 = editGame.getPlayerList().get(PLAYER2_NUMBER);
@@ -255,15 +316,8 @@ public class GameInfoActivity extends AppCompatActivity {
         gameManager.deleteSpecificGame(gameIndex);
     }
 
-    private void resetWinnersRealTimeUpdate() {
-        winnersRealTimeUpdate.setText("Calculating score...");
-        player1Score.setText("--");
-        player2Score.setText("--");
-    }
-
     private void setWinnersRealTimeUpdate (){
         if (!checkIfEmpty()){
-
             updateIntegersFromInput();
 
             player1Score.setText(String.valueOf(p1Score));
@@ -279,7 +333,32 @@ public class GameInfoActivity extends AppCompatActivity {
             else {
                 winningPlayers = "Player 1 and Player 2 (TIE)";
             }
-            winnersRealTimeUpdate.setText("Winning players: " + winningPlayers);
+
+            if (checkIfIllegal()){
+                winnersRealTimeUpdate.setText("Players cannot have 0 cards.");
+            }
+            else {
+                winnersRealTimeUpdate.setText("Winning players: " + winningPlayers);
+            }
+        }
+        else {
+            winnersRealTimeUpdate.setText("Calculating score...");
+            player1Score.setText("--");
+            player2Score.setText("--");
+        }
+    }
+
+    private void setDatePlayed(boolean editGameActivity) {
+        TextView currentDate = findViewById(R.id.tvCurrentDate);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d @ H:mma");
+
+        if (editGameActivity == false){
+            datePlayed = LocalDateTime.now();
+            currentDate.setText(datePlayed.format(dateTimeFormatter));
+        }
+        if (editGameActivity == true){
+            datePlayed = gameManager.getSpecificGame(gameIndex).getDatePlayed();
+            currentDate.setText(datePlayed.format(dateTimeFormatter));
         }
     }
 
@@ -325,6 +404,8 @@ public class GameInfoActivity extends AppCompatActivity {
                 player2NumberOfWagers.getText().toString().trim().isEmpty();
     }
 
-
+    private boolean checkIfIllegal(){
+        return (p1Cards == 0 && (p1Sum > 0 || p1Wagers > 0)) || (p2Cards == 0 && (p2Sum > 0 || p2Wagers > 0));
+    }
 
 }
