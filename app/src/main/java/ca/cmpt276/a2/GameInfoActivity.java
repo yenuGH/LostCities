@@ -280,13 +280,16 @@ public class GameInfoActivity extends AppCompatActivity implements ConfirmationD
         Game editGame = gameManager.getSpecificGame(gameIndex);
         ArrayList<PlayerScore> playerScores = editGame.getPlayerList();
 
+        PlayerScore player1 = editGame.getPlayerList().get(PLAYER1_NUMBER);
+        PlayerScore player2 = editGame.getPlayerList().get(PLAYER2_NUMBER);
+
         updateIntegersFromInput();
         if (checkIfIllegal()){
             throw new ArithmeticException("0 cards with non-zero values");
         }
 
-        playerScores.get(PLAYER1_NUMBER).editScore(p1Cards, p1Sum, p1Wagers);
-        playerScores.get(PLAYER2_NUMBER).editScore(p2Cards, p2Sum, p2Wagers);
+        player1.editScore(p1Cards, p1Sum, p1Wagers);
+        player2.editScore(p2Cards, p2Sum, p2Wagers);
 
         editGame.calculateScores();
     }

@@ -41,25 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<GameInfoCardModel> gameInfoCardModels = new ArrayList<>();
     private GameInfoRecyclerViewAdapter adapter;
 
-    // https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html
-    // https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/time/LocalDateTime.html
-    // https://www.javadoc.io/doc/com.google.code.gson/gson/2.8.1/com/google/gson/TypeAdapter.html
-    // https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/stream/JsonWriter.html
-    // https://stackoverflow.com/questions/61432170/how-to-serialize-localdate-using-gson
-
-    private Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-            new TypeAdapter<LocalDateTime>() {
-                @Override
-                public void write(JsonWriter jsonWriter,
-                                  LocalDateTime localDateTime) throws IOException {
-                    jsonWriter.value(localDateTime.toString());
-                }
-                @Override
-                public LocalDateTime read(JsonReader jsonReader) throws IOException {
-                    return LocalDateTime.parse(jsonReader.nextString());
-                }
-            }).create();
-
     GameManager gameManager = GameManager.getInstance();
 
     @Override
@@ -92,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         saveData();
-        finish();
-        System.exit(0);
-        // Toast.makeText(MainActivity.this, "Hello.", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -128,13 +106,53 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_GAME_MANAGER_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        // https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html
+        // https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/time/LocalDateTime.html
+        // https://www.javadoc.io/doc/com.google.code.gson/gson/2.8.1/com/google/gson/TypeAdapter.html
+        // https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/stream/JsonWriter.html
+        // https://stackoverflow.com/questions/61432170/how-to-serialize-localdate-using-gson
+
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+                new TypeAdapter<LocalDateTime>() {
+                    @Override
+                    public void write(JsonWriter jsonWriter,
+                                      LocalDateTime localDateTime) throws IOException {
+                        jsonWriter.value(localDateTime.toString());
+                    }
+                    @Override
+                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                        return LocalDateTime.parse(jsonReader.nextString());
+                    }
+                }).setPrettyPrinting().create();
+
         String json = gson.toJson(gameManager.getGameList());
         editor.putString(JSON_NAME, json);
         editor.apply();
+        gameManager.getGameList().clear();
+        finishAffinity();
     }
 
     private void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_GAME_MANAGER_NAME, MODE_PRIVATE);
+
+        // https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html
+        // https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/time/LocalDateTime.html
+        // https://www.javadoc.io/doc/com.google.code.gson/gson/2.8.1/com/google/gson/TypeAdapter.html
+        // https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/stream/JsonWriter.html
+        // https://stackoverflow.com/questions/61432170/how-to-serialize-localdate-using-gson
+
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+                new TypeAdapter<LocalDateTime>() {
+                    @Override
+                    public void write(JsonWriter jsonWriter,
+                                      LocalDateTime localDateTime) throws IOException {
+                        jsonWriter.value(localDateTime.toString());
+                    }
+                    @Override
+                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                        return LocalDateTime.parse(jsonReader.nextString());
+                    }
+                }).setPrettyPrinting().create();
 
         String json = sharedPreferences.getString(JSON_NAME, null);
         if (json != null){
